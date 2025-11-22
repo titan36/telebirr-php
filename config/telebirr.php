@@ -60,8 +60,8 @@ return [
     | Path to your RSA private key file
     |
     */
-    'private_key_path' => env('TELEBIRR_PRIVATE_KEY_PATH', storage_path('app/telebirr/keys/private_key.pem')),
-
+    'private_key_path' => env('TELEBIRR_PRIVATE_KEY_PATH', 'app/telebirr/keys/private_key.pem'),
+    
     /*
     |--------------------------------------------------------------------------
     | Public Key Path
@@ -70,7 +70,7 @@ return [
     | Path to your RSA public key file
     |
     */
-    'public_key_path' => env('TELEBIRR_PUBLIC_KEY_PATH', storage_path('app/telebirr/keys/public_key.pem')),
+    'public_key_path'  => env('TELEBIRR_PUBLIC_KEY_PATH', 'app/telebirr/keys/public_key.pem'),
 
     /*
     |--------------------------------------------------------------------------
