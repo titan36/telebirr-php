@@ -55,11 +55,5 @@ class TelebirrServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../keys' => storage_path('app/telebirr/keys'),
         ], 'telebirr-keys');
-
-        // Load routes
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-
-        // Load migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }
