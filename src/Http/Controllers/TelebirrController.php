@@ -4,7 +4,7 @@ namespace Ttechnos\Telebirr\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use afroeltechnologies\TelebirrLaravel\Facades\Telebirr;
+use Ttechnos\Telebirr\Facades\Telebirr;
 use Illuminate\Support\Facades\Log;
 
 class TelebirrController extends Controller
@@ -30,7 +30,7 @@ class TelebirrController extends Controller
             }
 
             // Fire event for the application to handle
-            event(new \Afroeltechnologies\TelebirrLaravel\Events\TelebirrPaymentReceived($data));
+            event(new \Ttechnos\Telebirr\Events\TelebirrPaymentReceived($data));
 
             return response()->json([
                 'msg' => 'success',

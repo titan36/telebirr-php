@@ -2,8 +2,8 @@
 
 namespace Ttechnos\Telebirr\Services;
 
-use Afroeltechnologies\TelebirrLaravel\Exceptions\TelebirrException;
-use Afroeltechnologies\TelebirrLaravel\Utils\SignatureHelper;
+use Ttechnos\Telebirr\Exceptions\TelebirrException;
+use Ttechnos\Telebirr\Utils\SignatureHelper;
 
 class OrderService
 {

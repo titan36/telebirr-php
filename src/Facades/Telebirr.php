@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getFabricToken()
  * @method static bool verifySignature(array $data)
  *
- * @see \Afroeltechnologies\TelebirrLaravel\TelebirrService
+ * @see \Ttechnos\Telebirr\TelebirrService
  */
 class Telebirr extends Facade
 {

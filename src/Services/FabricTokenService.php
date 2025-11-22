@@ -2,7 +2,7 @@
 
 namespace Ttechnos\Telebirr\Services;
 
-use Afroeltechnologies\TelebirrLaravel\Exceptions\TelebirrException;
+use Ttechnos\Telebirr\Exceptions\TelebirrException;
 
 class FabricTokenService
 {

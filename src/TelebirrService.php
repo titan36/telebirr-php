@@ -2,9 +2,9 @@
 
 namespace Ttechnos\Telebirr;
 
-use Afroeltechnologies\TelebirrLaravel\Services\FabricTokenService;
-use Afroeltechnologies\TelebirrLaravel\Services\OrderService;
-use Afroeltechnologies\TelebirrLaravel\Exceptions\TelebirrException;
+use Ttechnos\Telebirr\Services\FabricTokenService;
+use Ttechnos\Telebirr\Services\OrderService;
+use Ttechnos\Telebirr\Exceptions\TelebirrException;
 
 class TelebirrService
 {
