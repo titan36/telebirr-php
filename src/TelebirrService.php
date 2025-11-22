@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel;
+namespace Ttechnos\Telebirr;
 
 use Afroeltechnologies\TelebirrLaravel\Services\FabricTokenService;
 use Afroeltechnologies\TelebirrLaravel\Services\OrderService;

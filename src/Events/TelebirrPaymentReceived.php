@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Events;
+namespace Ttechnos\Telebirr\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

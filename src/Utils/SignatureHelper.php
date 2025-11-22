@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Utils;
+namespace Ttechnos\Telebirr\Utils;
 
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\PublicKeyLoader;

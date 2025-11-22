@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Services;
+namespace Ttechnos\Telebirr\Services;
 
 use Afroeltechnologies\TelebirrLaravel\Exceptions\TelebirrException;
 use Afroeltechnologies\TelebirrLaravel\Utils\SignatureHelper;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Http\Controllers;
+namespace Ttechnos\Telebirr\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

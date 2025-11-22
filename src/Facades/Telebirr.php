@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Facades;
+namespace Ttechnos\Telebirr\Facades;
 
 
 use Illuminate\Support\Facades\Facade;

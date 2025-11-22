@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel\Exceptions;
+namespace Ttechnos\Telebirr\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Afroeltechnologies\TelebirrLaravel;
+namespace Ttechnos\Telebirr;
 
 use Illuminate\Support\ServiceProvider;
 
