@@ -1,0 +1,22 @@
+{
+    "name": "ttechnos/telebirr",
+    "description": "Laravel package for Telebirr payment integration",
+    "type": "library",
+    "require": {
+        "php": "7.4",
+        "phpseclib/phpseclib": "3.0.46",
+        "spatie/crypto": "2.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ttechnos\\Telebirr\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tito Hailu",
+            "email": "titushailu125@gmail.com"
+        }
+    ]
+}
