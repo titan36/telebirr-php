@@ -5,7 +5,7 @@ return [
     |--------------------------------------------------------------------------
     | Telebirr Base URL
     |--------------------------------------------------------------------------
-    |
+    |   
     | The base URL for Telebirr API. Use the sandbox URL for testing
     | and production URL for live transactions.
     |
