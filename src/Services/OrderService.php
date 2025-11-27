@@ -60,8 +60,6 @@ class OrderService
         // Create pre-order
         $createOrderResult = $this->requestCreateOrder($fabricToken, $title, $amount, $options);
         
-        \Log::info('Telebirr createOrder raw response', ['response' => $createOrderResult]);
-
         $orderData = json_decode($createOrderResult, true);
 
         if (!isset($orderData['biz_content']['prepay_id'])) {
@@ -144,19 +142,21 @@ class OrderService
         ];
 
         $biz = [
-            'notify_url' => $notifyUrl,
-            'business_type' => $options['business_type'] ?? 'BuyGoods',
-            'trade_type' => $options['trade_type'] ?? 'WebCheckout',
+            'notify_url' => $options['notify_url'] ?? config('telebirr.notify_url'),
             'appid' => $this->merchantAppId,
             'merch_code' => $this->merchantCode,
-            'merch_order_id' => $options['merch_order_id'] ?? $this->createMerchantOrderId(),
+            'merch_order_id' => $this->createMerchantOrderId(),
+            'trade_type' => 'Checkout',
             'title' => $title,
             'total_amount' => (string)$amount,
-            'trans_currency' => config('telebirr.currency', 'ETB'),
+            'trans_currency' => 'ETB',
             'timeout_express' => config('telebirr.timeout', '120m'),
-            'payee_identifier' => $options['payee_identifier'],
+            'business_type' => $options['business_type'] ?? 'BuyGoods',
+            'payee_identifier' => $this->merchantCode,
             'payee_identifier_type' => $options['payee_identifier_type'] ?? '04',
-            'payee_type' => $options['payee_type'] ?? '5000',
+            'payee_type' => '5000',
+            'redirect_url' => $options['redirect_url'] ?? config('telebirr.redirect_url'),
+            'callback_info' => $options['callback_info'] ?? 'From web',
         ];
 
         if (isset($options['redirect_url'])) {

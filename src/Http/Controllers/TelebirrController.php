@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class TelebirrController extends Controller
 {
     /**
-     * Handle Telebirr payment callback/webhook
+     * Handle Telebirr payment call back
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -20,16 +20,13 @@ class TelebirrController extends Controller
         try {
             $data = $request->all();
 
-            // Log the callback data
-            Log::info('Telebirr Callback Received', $data);
-
             // Verify signature
             if (!Telebirr::verifySignature($data)) {
                 Log::error('Telebirr Callback: Invalid signature', $data);
                 return response()->json(['msg' => 'Invalid signature'], 400);
             }
 
-            // Fire event for the application to handle
+            // Fire event for the application to handle the call back
             event(new \Ttechnos\Telebirr\Events\TelebirrPaymentReceived($data));
 
             return response()->json([
