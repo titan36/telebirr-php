@@ -154,7 +154,7 @@ class OrderService
             'total_amount' => (string)$amount,
             'trans_currency' => config('telebirr.currency', 'ETB'),
             'timeout_express' => config('telebirr.timeout', '120m'),
-            'payee_identifier' => $options['payee_identifier'] ?? '220311',
+            'payee_identifier' => $options['payee_identifier'],
             'payee_identifier_type' => $options['payee_identifier_type'] ?? '04',
             'payee_type' => $options['payee_type'] ?? '5000',
         ];
