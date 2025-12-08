@@ -80,7 +80,7 @@ return [
     | The URL where Telebirr will send payment notifications
     |
     */
-    'notify_url' => env('TELEBIRR_NOTIFY_URL', null), // If null, will use route('telebirr.callback')
+    'notify_url' => env('TELEBIRR_NOTIFY_URL', null),
 
     /*
     |--------------------------------------------------------------------------

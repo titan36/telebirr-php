@@ -131,7 +131,7 @@ class OrderService
      */
     protected function createRequestObject($title, $amount, array $options = [])
     {
-        $notifyUrl = $options['notify_url'] ?? config('telebirr.notify_url') ?? route('telebirr.callback');
+        $notifyUrl = $options['notify_url'] ?? config('telebirr.notify_url');
 
         $req = [
             'nonce_str' => SignatureHelper::createNonceStr(),
