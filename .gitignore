@@ -1,5 +1,9 @@
 /vendor/
 /.idea/
-/*.log
+*.log
 /.env
 /tests/_output/
+.DS_Store
+composer.lock
+*.pem
+!*.pem.example
