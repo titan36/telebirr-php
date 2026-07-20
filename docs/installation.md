@@ -1,49 +1,32 @@
-# Installation Guide
-
-Follow these steps to install the Telebirr payment integration package in your Laravel project.
+# Installation
 
 ## Requirements
 
-- PHP `7.4` or higher
-- Laravel `8.x`, `9.x`, `10.x`, or `11.x`
-- OpenSSL PHP extension (`ext-openssl` or `phpseclib/phpseclib` which is bundled)
-- `ext-curl` enabled in php.ini
-
----
+- PHP 7.4 or higher
+- Laravel 8.x, 9.x, 10.x, or 11.x
+- OpenSSL extension
+- ext-curl extension
 
 ## 1. Install via Composer
-
-Add the package to your project using Composer:
 
 ```bash
 composer require ttechnos/telebirr
 ```
 
----
+## 2. Laravel Setup
 
-## 2. Service Discovery (Auto-Discovery)
+The package supports auto-discovery and will register its service provider and facade automatically.
 
-This package supports Laravel Package Auto-Discovery. It will automatically register the following:
-* Service Provider: `Ttechnos\Telebirr\TelebirrServiceProvider`
-* Facade: `Ttechnos\Telebirr\Facades\Telebirr`
-
-### Manual Registration (Laravel 8/9 or older setups)
-
-If you have auto-discovery disabled or are on older Laravel versions, add these manually to your `config/app.php`:
+If auto-discovery is disabled or you are using older Laravel versions, register them manually in `config/app.php`:
 
 ```php
 'providers' => [
-    // ... other providers
     Ttechnos\Telebirr\TelebirrServiceProvider::class,
 ],
 
 'aliases' => [
-    // ... other aliases
     'Telebirr' => Ttechnos\Telebirr\Facades\Telebirr::class,
 ],
 ```
 
----
-
-## 3. Next Steps
-Once installed, proceed to configure your keys and credentials in the [Configuration Guide](configuration.md).
+Next, read the [Configuration Guide](configuration.md) to set up credentials.

@@ -1,27 +1,28 @@
-# Webhook Callbacks & Notifications
+# Webhook Callbacks
 
-When a payment is completed successfully, Telebirr makes a server-to-server POST request to your `notify_url` with details of the payment. 
+When a payment is completed, Telebirr makes a server-to-server POST request to your `notify_url` with details of the transaction. You must verify the signature of the incoming request payload before fulfilling the order.
 
-To process payments securely, you must verify the signature of the incoming request before fulfilling the user's order.
+## 1. Register Callback Route
 
----
-
-## 1. Defining the Callback Route
-
-Define a route in your `routes/api.php` file:
+Define a route in `routes/api.php`:
 
 ```php
 use App\Http\Controllers\PaymentController;
 
-// Disable CSRF verification for this endpoint
 Route::post('/telebirr/callback', [PaymentController::class, 'handleCallback']);
 ```
 
----
+### CSRF Exception
 
-## 2. Implementing the Callback Controller
+Add the callback path to the `$except` array in `app/Http/Middleware/VerifyCsrfToken.php`:
 
-Create a controller to handle the incoming request, verify its signature, and trigger internal processes:
+```php
+protected $except = [
+    'api/telebirr/callback',
+];
+```
+
+## 2. Controller Example
 
 ```php
 <?php
@@ -39,22 +40,19 @@ class PaymentController extends Controller
     {
         $data = $request->all();
 
-        // 1. Verify that the request actually came from Telebirr and hasn't been spoofed
+        // Verify webhook signature
         if (!Telebirr::verifySignature($data)) {
-            Log::warning('Telebirr Callback: Signature verification failed!', $data);
+            Log::warning('Telebirr Callback: Invalid signature', $data);
             return response()->json(['msg' => 'Invalid signature'], 400);
         }
 
-        // 2. Extract transaction details
         $merchOrderId = $data['merch_order_id'] ?? null;
-        $tradeStatus = $data['trade_status'] ?? null;
-        $totalAmount = $data['total_amount'] ?? null;
-        $tradeNo = $data['trade_no'] ?? null; // Telebirr's transaction ID
-
-        Log::info("Telebirr Callback verified: Order {$merchOrderId}, Status: {$tradeStatus}");
+        $tradeStatus  = $data['trade_status'] ?? null;
+        $totalAmount  = $data['total_amount'] ?? null;
+        $tradeNo      = $data['trade_no'] ?? null;
 
         if ($tradeStatus === 'PAY_SUCCESS') {
-            // Find and process your order idempotently
+            // Process order status (ensure idempotency check)
             $order = Order::where('order_id', $merchOrderId)->first();
 
             if ($order && $order->status !== 'completed') {
@@ -63,12 +61,10 @@ class PaymentController extends Controller
                     'telebirr_trade_no' => $tradeNo,
                     'paid_amount' => $totalAmount,
                 ]);
-
-                // Trigger email/notifications to user
             }
         }
 
-        // 3. Respond with a JSON success payload so Telebirr knows we received the callback
+        // Acknowledge receipt to Telebirr
         return response()->json([
             'code' => 0,
             'msg' => 'success'
@@ -77,33 +73,13 @@ class PaymentController extends Controller
 }
 ```
 
----
+## 3. Callback Parameter Reference
 
-## 3. Callback Payload Structure
-
-The array received from Telebirr and verified by `verifySignature` contains the following fields:
-
-| Field Name | Type | Description |
-|------------|------|-------------|
-| `merch_order_id` | `string` | The unique ID of the order on your system. |
-| `trade_status` | `string` | The status of the trade (e.g., `PAY_SUCCESS`). |
-| `total_amount` | `string` | The total payment amount (e.g., `100.50`). |
-| `trade_no` | `string` | Telebirr's unique transaction number. |
-| `trans_end_time` | `string` | Epoch timestamp of transaction completion. |
-| `payment_order_id`| `string` | The internal Telebirr payment order identifier. |
-
----
-
-## 4. Security Best Practices
-
-### CSRF Exemption
-Ensure you add your webhook route path to the `$except` array in `app/Http/Middleware/VerifyCsrfToken.php` so Laravel doesn't block the callback request:
-
-```php
-protected $except = [
-    'api/telebirr/callback',
-];
-```
-
-### Idempotency
-Telebirr might send the callback notification multiple times if your server doesn't respond fast enough or if there are network issues. Always check if the order status is already marked as `completed` before updating or fulfilling it.
+| Field | Type | Description |
+|-------|------|-------------|
+| `merch_order_id` | `string` | The unique ID of the order on your system |
+| `trade_status` | `string` | Status of the trade (e.g., `PAY_SUCCESS`) |
+| `total_amount` | `string` | Total payment amount (e.g., `100.50`) |
+| `trade_no` | `string` | Telebirr's unique transaction identifier |
+| `trans_end_time` | `string` | Epoch timestamp of transaction completion |
+| `payment_order_id`| `string` | Telebirr payment order identifier |
