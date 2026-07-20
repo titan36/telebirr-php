@@ -47,7 +47,13 @@ This will copy the config and keys into your Laravel project.
 Install via Composer:
 
 ```bash
-composer require ttechnos/telebirr:dev-main
+composer require ttechnos/telebirr
+```
+
+To install a specific version:
+
+```bash
+composer require ttechnos/telebirr:^1.0
 ```
 
 ## 3 Usage
