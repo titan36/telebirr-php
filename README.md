@@ -51,9 +51,6 @@ Place your RSA key files in the path specified in `.env`:
 storage/app/telebirr/keys/private_key.pem
 storage/app/telebirr/keys/public_key.pem
 ```
-
-> ⚠️ **Never commit your private key** to version control.
-
 ### 3. Publish config & example keys (optional)
 
 ```bash
@@ -77,9 +74,15 @@ $order = Telebirr::createOrder('Test Product', 100.50, [
     'redirect_url' => 'https://yourapp.com/payment/success',
 ]);
 
-// Access the prepay ID and raw request
-$prepayId   = $order['prepay_id'];
-$rawRequest = $order['raw_request'];
+// Query order status (check if paid)
+$status = Telebirr::queryOrder($prepayId); // Or queryOrder(null, $merchantOrderId)
+$tradeStatus = $status['biz_content']['trade_status'] ?? ''; // 'PAY_SUCCESS'
+
+// Refund a payment
+$refund = Telebirr::refundOrder(10.00, $paymentOrderId); // Or refundOrder(10.00, null, $merchantOrderId)
+
+// Verify webhook/callback signature
+$isValid = Telebirr::verifySignature($requestData);
 ```
 
 ### Using the Service directly
@@ -89,6 +92,8 @@ $telebirr = app('telebirr');
 
 $token   = $telebirr->getFabricToken();
 $order   = $telebirr->createOrder('Test Product', 100.50);
+$status  = $telebirr->queryOrder($prepayId);
+$refund  = $telebirr->refundOrder(10.00, $paymentOrderId);
 $isValid = $telebirr->verifySignature($data);
 ```
 
@@ -96,9 +101,11 @@ $isValid = $telebirr->verifySignature($data);
 
 | Feature | Status |
 |---------|--------|
-| H5 Web Checkout (B2C) | ✅ Supported |
-| Fabric Token | ✅ Supported |
-| Signature Verification | ✅ Supported |
+| H5 Web Checkout (B2C) | ✅ Fully Supported |
+| Fabric Token Auth | ✅ Fully Supported |
+| Query Order Status | ✅ Fully Supported |
+| Refund Payments | ✅ Fully Supported |
+| RSA-PSS Signature Verification | ✅ Fully Supported |
 | In-App SDK Payment | 🔜 Coming soon |
 | C2B (Scan to Pay) | 🔜 Coming soon |
 | B2B Payment | 🔜 Coming soon |

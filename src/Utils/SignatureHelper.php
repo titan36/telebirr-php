@@ -140,4 +140,80 @@ class SignatureHelper
     {
         return (string)time();
     }
+
+    /**
+     * Verify data with RSA public key
+     *
+     * @param array $data
+     * @param string $signature
+     * @param string $publicKeyPath
+     * @return bool
+     */
+    public static function verify(array $data, $signature, $publicKeyPath)
+    {
+        $excludeFields = ["sign", "sign_type", "header", "refund_info", "openType", "raw_request"];
+        ksort($data);
+
+        $stringApplet = '';
+        foreach ($data as $key => $values) {
+            if (in_array($key, $excludeFields)) {
+                continue;
+            }
+
+            if ($key === "biz_content") {
+                $valuesArray = is_array($values) ? $values : json_decode($values, true);
+                if (is_array($valuesArray)) {
+                    foreach ($valuesArray as $value => $singleValue) {
+                        if ($stringApplet === '') {
+                            $stringApplet = $value . '=' . $singleValue;
+                        } else {
+                            $stringApplet = $stringApplet . '&' . $value . '=' . $singleValue;
+                        }
+                    }
+                }
+            } else {
+                if ($stringApplet === '') {
+                    $stringApplet = $key . '=' . $values;
+                } else {
+                    $stringApplet = $stringApplet . '&' . $key . '=' . $values;
+                }
+            }
+        }
+
+        $sortedString = self::sortedString($stringApplet);
+
+        return self::verifyWithRSA($sortedString, $signature, $publicKeyPath);
+    }
+
+    /**
+     * Verify signature using RSA public key
+     *
+     * @param string $data
+     * @param string $signature
+     * @param string $publicKeyPath
+     * @return bool
+     */
+    protected static function verifyWithRSA($data, $signature, $publicKeyPath)
+    {
+        $publicKeyContent = file_get_contents($publicKeyPath);
+        
+        try {
+            $publicKey = PublicKeyLoader::load($publicKeyContent);
+        } catch (\Exception $e) {
+            throw new \Exception("Error loading Public Key: " . $e->getMessage());
+        }
+
+        // Clean space-to-plus in base64 if URL-encoded
+        if (strpos($signature, ' ') !== false && strpos($signature, '+') === false) {
+            $signature = str_replace(' ', '+', $signature);
+        }
+        $signatureBinary = base64_decode($signature);
+
+        return $publicKey
+            ->withHash('sha256')
+            ->withMGFHash('sha256')
+            ->withPadding(RSA::SIGNATURE_PSS)
+            ->withSaltLength(32)
+            ->verify($data, $signatureBinary);
+    }
 }

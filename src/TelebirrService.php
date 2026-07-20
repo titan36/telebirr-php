@@ -4,6 +4,9 @@ namespace Ttechnos\Telebirr;
 
 use Ttechnos\Telebirr\Services\FabricTokenService;
 use Ttechnos\Telebirr\Services\OrderService;
+use Ttechnos\Telebirr\Services\QueryOrderService;
+use Ttechnos\Telebirr\Services\RefundOrderService;
+use Ttechnos\Telebirr\Utils\SignatureHelper;
 use Ttechnos\Telebirr\Exceptions\TelebirrException;
 
 class TelebirrService
@@ -76,6 +79,53 @@ class TelebirrService
     }
 
     /**
+     * Query order status
+     *
+     * @param string|null $prepayId
+     * @param string|null $merchOrderId
+     * @return array
+     * @throws TelebirrException
+     */
+    public function queryOrder($prepayId = null, $merchOrderId = null)
+    {
+        $queryService = new QueryOrderService(
+            $this->baseUrl,
+            $this->fabricAppId,
+            $this->appSecret,
+            $this->merchantAppId,
+            $this->merchantCode,
+            $this->privateKeyPath
+        );
+
+        return $queryService->queryOrder($prepayId, $merchOrderId);
+    }
+
+    /**
+     * Refund a transaction
+     *
+     * @param string|int|float $refundAmount
+     * @param string|null $paymentOrderId
+     * @param string|null $merchOrderId
+     * @param string|null $refundReason
+     * @param string|null $refundOrderId
+     * @return array
+     * @throws TelebirrException
+     */
+    public function refundOrder($refundAmount, $paymentOrderId = null, $merchOrderId = null, $refundReason = null, $refundOrderId = null)
+    {
+        $refundService = new RefundOrderService(
+            $this->baseUrl,
+            $this->fabricAppId,
+            $this->appSecret,
+            $this->merchantAppId,
+            $this->merchantCode,
+            $this->privateKeyPath
+        );
+
+        return $refundService->refundOrder($refundAmount, $paymentOrderId, $merchOrderId, $refundReason, $refundOrderId);
+    }
+
+    /**
      * Verify callback signature
      *
      * @param array $data
@@ -83,7 +133,12 @@ class TelebirrService
      */
     public function verifySignature(array $data)
     {
-        // Implement signature verification logic
-        return true;
+        if (!isset($data['sign'])) {
+            return false;
+        }
+
+        $signature = $data['sign'];
+
+        return SignatureHelper::verify($data, $signature, $this->publicKeyPath);
     }
 }
