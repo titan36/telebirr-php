@@ -8,6 +8,17 @@ A Laravel package for integrating the **Telebirr H5 (Web Checkout)** payment gat
 
 ---
 
+## Documentation
+
+Browse the documentation for step-by-step guides:
+- [**Installation Guide**](docs/installation.md)
+- [**Configuration Guide**](docs/configuration.md)
+- [**Payment Flow (H5 Checkout)**](docs/payment-flow.md)
+- [**Webhook Callbacks & Notifications**](docs/callbacks.md)
+- [**Order Queries & Refunds**](docs/queries-refunds.md)
+
+---
+
 ## Requirements
 
 - PHP 7.4 or higher
