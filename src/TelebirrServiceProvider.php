@@ -51,9 +51,10 @@ class TelebirrServiceProvider extends ServiceProvider
             __DIR__.'/../config/telebirr.php' => config_path('telebirr.php'),
         ], 'telebirr-config');
 
-        // Publish keys directory
+        // Publish example key files
         $this->publishes([
-            __DIR__.'/../keys' => storage_path('app/telebirr/keys'),
+            __DIR__.'/../keys/private_key.pem.example' => storage_path('app/telebirr/keys/private_key.pem.example'),
+            __DIR__.'/../keys/public_key.pem.example'  => storage_path('app/telebirr/keys/public_key.pem.example'),
         ], 'telebirr-keys');
     }
 }
